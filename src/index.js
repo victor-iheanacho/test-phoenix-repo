@@ -10,10 +10,16 @@ const fs = require("fs"),
     errorhandler = require("errorhandler"),
     mongoose = require("mongoose");
 
+import swaggerUi from 'swagger-ui-express';
+import swaggerDoc from '../swaggerDoc';
+
 const isProduction = process.env.NODE_ENV === "production";
 
 // Create global app object
 const app = express();
+
+// setup swagger api documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 app.use(cors());
 
