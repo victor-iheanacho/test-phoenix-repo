@@ -10,7 +10,7 @@ const fs = require("fs"),
     errorhandler = require("errorhandler"),
     mongoose = require("mongoose");
 
-import swaggerUi from 'swagger-ui-express';
+import {serve, setup} from 'swagger-ui-express';
 import swaggerDoc from '../swaggerDoc';
 
 const isProduction = process.env.NODE_ENV === "production";
@@ -19,7 +19,7 @@ const isProduction = process.env.NODE_ENV === "production";
 const app = express();
 
 // generate api documentation
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+app.use('/api-docs', serve, setup(swaggerDoc));
 
 app.use(cors());
 
