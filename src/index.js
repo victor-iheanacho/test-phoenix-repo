@@ -10,7 +10,7 @@ const fs = require("fs"),
     errorhandler = require("errorhandler"),
     mongoose = require("mongoose");
 
-import {serve, setup} from 'swagger-ui-express';
+import { serve, setup } from 'swagger-ui-express';
 import swaggerDoc from '../swaggerDoc';
 
 const isProduction = process.env.NODE_ENV === "production";
