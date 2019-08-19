@@ -4,7 +4,8 @@
   "description": "A Social platform for the creative at heart",
   "main": "index.js",
   "scripts": {
-    "start": "node ./src/index.js",
+    "start": "node ./src/bin/www",
+    "devstart": "babel-watch ./src/index.js",
     "build": "rm -rf dist && mkdir dist && babel src -s -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -35,6 +36,8 @@
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
     "@babel/plugin-transform-runtime": "^7.5.5",
-    "@babel/preset-env": "^7.5.5"
+    "@babel/preset-env": "^7.5.5",
+    "@babel/register": "^7.5.5",
+    "babel-watch": "^7.0.0"
   }
 }
