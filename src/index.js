@@ -1,3 +1,6 @@
+import { serve, setup } from 'swagger-ui-express';
+import swaggerDoc from '../swaggerDoc';
+
 const fs = require("fs"),
     http = require("http"),
     path = require("path"),
@@ -10,8 +13,6 @@ const fs = require("fs"),
     errorhandler = require("errorhandler"),
     mongoose = require("mongoose");
 
-import { serve, setup } from 'swagger-ui-express';
-import swaggerDoc from '../swaggerDoc';
 
 const isProduction = process.env.NODE_ENV === "production";
 
