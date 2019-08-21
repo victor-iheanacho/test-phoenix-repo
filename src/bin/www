@@ -1,3 +1,13 @@
-require('@babel/register')
-require('@babel/core')
-require('./../../src/index')
+require('@babel/register');
+require('@babel/core');
+const http = require('http');
+const debug = require('debug');
+const app = require('../index').default;
+
+const port =  parseInt(process.env.PORT, 10) || 3000;
+const server = http.createServer(app);
+
+// finally, let's start our server...
+server.listen(port, () => {
+  debug.log(`Listening on port ${port}`);
+});
