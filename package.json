@@ -7,7 +7,7 @@
     "start": "node ./src/bin/www",
     "devstart": "babel-watch ./src/index.js",
     "build": "rm -rf dist && mkdir dist && babel src -s -d dist",
-    "test": " set NODE_ENV=test && mocha -r @babel/register --recursive src/tests/ --exit"
+   "test": " set NODE_ENV=test&& mocha -r @babel/register --recursive src/tests/ --exit"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
