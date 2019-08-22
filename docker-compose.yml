@@ -31,3 +31,4 @@ services:
       - POSTGRES_USER
       # create the default database as todos
       - POSTGRES_DB
+      
