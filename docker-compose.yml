@@ -1,0 +1,34 @@
+version: '2'
+services:
+  # web sevices
+  web:
+    # build the docker image based on specified docker file
+    build: .
+    # command to start the application after image is built and container is running
+    command: npm start
+    #  mount paths between host machine and container
+    volumes:
+      # mount root directory to working directory in container
+      - .:/usr/app/
+      # mount node_modules directory to the host machine using the build time directory
+      - /usr/app/node_modules
+    # expose ports
+    ports:
+      - "${PORT}:${PORT}"
+    # set postgres dependency
+    depends_on:
+      - postgres
+    # set environment variables in the host machine that would be used in the app
+    environment:
+      - DATABASE_URL
+      - PORT
+  # set up postgres service to be used as dependecy
+  postgres:
+    # use predefined postgres image (-alpine)
+    image: postgres:9.6.2-alpine
+    environment:
+      # create user postgres as the default user for postgreSQL
+      - POSTGRES_USER
+      # create the default database as todos
+      - POSTGRES_DB
+      
