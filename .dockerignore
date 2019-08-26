@@ -1,0 +1,11 @@
+# Remove files not needed for docker app to run
+node_modules
+npm-debug.log
+logs/*
+.bablerc
+.env.example
+.eslintrc.json
+.gitignore
+.hound.yml
+.sequelizerc
+.travis.yml
