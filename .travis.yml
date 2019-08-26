@@ -8,6 +8,12 @@ cache:
 install: 
   - npm install
 
+services:
+  - postgresql
+
+before_script:
+  - psql -c 'create database wetravel_test;' -U postgres
+
 script: 
   - npm test
  
