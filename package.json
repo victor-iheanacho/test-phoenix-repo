@@ -7,7 +7,12 @@
     "start": "node ./src/bin/www",
     "devstart": "babel-watch ./src/index.js",
     "build": "rm -rf dist && mkdir dist && babel src -s -d dist",
-    "test": " set NODE_ENV=test&& mocha -r @babel/register --recursive src/tests/ --exit"
+    "test": " set NODE_ENV=test&& mocha -r @babel/register --recursive src/tests/ --exit",
+    "generate-lcov": "nyc report --reporter=text-lcov > lcov.info",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "codeclimate": "codeclimate-test-reporter > lcov.info",
+    "coverage": "nyc npm test && npm run generate-lcov && npm run coveralls && npm run codeclimate",
+    "generate-report": "nyc --reporter=lcov --reporter=text-lcov npm test"
   },
   "author": "Andela Simulations Programme",
   "license": "MIT",
@@ -44,8 +49,12 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/register": "^7.5.5",
     "babel-watch": "^7.0.0",
+    "codeclimate-test-reporter": "^0.5.1",
+    "coveralls": "^3.0.6",
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.18.2"
+    "eslint-plugin-import": "^2.18.2",
+    "mocha-lcov-reporter": "^1.3.0",
+    "nyc": "^14.1.1"
   }
 }
