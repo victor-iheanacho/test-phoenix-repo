@@ -14,6 +14,9 @@ const isProduction = process.env.NODE_ENV === 'production';
 // Create global app object
 const app = express();
 
+// generate api documentation
+app.use('/api-docs', serve, setup(swaggerDoc));
+
 app.use(cors());
 
 // Normal express config defaults
