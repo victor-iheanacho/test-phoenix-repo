@@ -1,5 +1,5 @@
-import { serve, setup } from "swagger-ui-express";
-import swaggerDoc from "../swaggerDoc";
+import { serve, setup } from 'swagger-ui-express';
+import swaggerDoc from '../swaggerDoc';
 
 const fs = require('fs'),
   http = require('http'),
