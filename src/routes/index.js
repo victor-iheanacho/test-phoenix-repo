@@ -1,5 +1,5 @@
 import express from 'express';
-import userRoutes from './user';
+import userRoutes from './userRoutes';
 
 const Router = express.Router();
 Router.get('/', (req, res) => res.status(301).redirect('api/v1'));

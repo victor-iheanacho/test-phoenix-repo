@@ -6,20 +6,34 @@ module.exports = {
       primaryKey: true,
       type: Sequelize.INTEGER
     },
-    username: {
+    firstName: {
       allowNull: false,
       type: Sequelize.STRING,
-      unique: true,
       validate: {
-        notEmpty: true
-      }
+        notNull: true,
+      },
+    },
+    userName: {
+      allowNull: false,
+      type: Sequelize.STRING,
+      unique: false,
+      validate: {
+        notNull: true,
+      },
+    },
+    lastName: {
+      allowNull: false,
+      type: Sequelize.STRING,
+      validate: {
+        notNull: true,
+      },
     },
     password: {
       allowNull: false,
       type: Sequelize.STRING,
       validate: {
-        notEmpty: true
-      }
+        notNull: true,
+      },
     },
     lastLogin: {
       allowNull: true,
@@ -30,24 +44,35 @@ module.exports = {
       type: Sequelize.STRING,
       unique: true,
       validate: {
-        isEmail: true
+        isEmail: true,
+        notNull: true,
       }
     },
     phoneNumber: {
       allowNull: false,
       type: Sequelize.STRING,
       validate: {
-        not: ['[a-z]', 'i']
-      }
+        notNull: true,
+      },
+    },
+    isAdmin: {
+      allowNull: true,
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+      validate: {
+        notNull: true,
+      },
     },
     createdAt: {
       allowNull: false,
-      type: Sequelize.DATE
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW
     },
     updatedAt: {
       allowNull: false,
-      type: Sequelize.DATE
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW
     }
   }),
-  down: queryInterface => queryInterface.dropTable('Users')
+  down: (queryInterface) => queryInterface.dropTable('Users')
 };
