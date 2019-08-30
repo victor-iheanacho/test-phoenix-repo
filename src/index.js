@@ -1,3 +1,6 @@
+import { serve, setup } from 'swagger-ui-express';
+import swaggerDoc from './public/api-docs/swaggerDoc';
+
 const fs = require('fs'),
   http = require('http'),
   path = require('path'),
@@ -13,6 +16,9 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 // Create global app object
 const app = express();
+
+// generate api documentation
+app.use('/api-docs', serve, setup(swaggerDoc));
 
 app.use(cors());
 
@@ -38,7 +44,6 @@ app.use(
 if (!isProduction) {
   app.use(errorhandler());
 }
-
 
 
 
