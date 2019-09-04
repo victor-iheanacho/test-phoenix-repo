@@ -121,6 +121,65 @@
                     }
                 }
             }
+        },
+        "/api/v1/auth/user": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Admin create a new user",
+                "description": "Allows an admin to create a new user",
+                "operationId": "CreateUser",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "user",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "firstName": {
+                                    "type": "string",
+                                    "example": "john"
+                                },
+                                "lastName": {
+                                    "type": "string",
+                                    "example": "doe"
+                                },
+                                "userName": {
+                                    "type": "string",
+                                    "example": "johnny"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "example": "johndoe@company.com"
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "example": "password"
+                                },
+                                "phoneNumber": {
+                                    "type": "string",
+                                    "example": "09023232322"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "409": {
+                        "description": "User already exists"
+                    }
+                }
+            }
         }
     },
     "securityDefinitions": {
