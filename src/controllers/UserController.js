@@ -1,4 +1,4 @@
-import UserServices from '../services/userServices.js';
+import UserServices from '../services/userServices';
 import Utils from '../utils';
 
 /**
@@ -17,6 +17,9 @@ export default class UserController {
       const userData = { ...req.body };
       userData.password = Utils.hashPassword(userData.password);
       const data = await UserServices.createUser(userData);
+      const { id, isAdmin } = data;
+      const token = Utils.generateToken({ id, isAdmin });
+      res.set('Authorization', `Bearer ${token}`);
       return res.status(201).json({
         status: 201,
         message: 'User successfuly created',
