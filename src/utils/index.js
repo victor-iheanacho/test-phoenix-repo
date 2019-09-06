@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 /**
  * Utils controller Class
@@ -23,6 +24,16 @@ class Utils {
    */
   static comparePassword(password, hashedPassword) {
     return bcrypt.compareSync(password, hashedPassword);
+  }
+
+  /**
+   * generateToken
+   * @description generates authentication token
+   * @param { Object } payload - { id, isAdmin }
+   * @returns { String } token
+   */
+  static generateToken(payload) {
+    return jwt.sign(payload, process.env.SECRET, { expiresIn: '2h' });
   }
 }
 
