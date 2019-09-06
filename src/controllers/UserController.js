@@ -2,6 +2,7 @@ import https from 'https';
 import Linkedn from 'node-linkedin';
 import Utils from '../utils';
 import UserServices from '../services/userServices';
+import ResponseMsg from '../utils/responseMessages';
 
 const scope = ['r_liteprofile', 'w_member_social', 'r_emailaddress'];
 const clientId = process.env.LINKENDIN_CLIENT_ID;
@@ -9,6 +10,8 @@ const clientSecret = process.env.LINKENDIN_CLIENT_SECRET;
 const redirect = process.env.LINKENDIN_REDIRECT_URL;
 const Linkedin = Linkedn(clientId, clientSecret, redirect);
 
+
+const { resSuccess, resError } = ResponseMsg;
 /**
  * User controller Class
  */
@@ -28,13 +31,9 @@ export default class UserController {
       const { id, isAdmin } = data;
       const token = Utils.generateToken({ id, isAdmin });
       res.set('Authorization', `Bearer ${token}`);
-      return res.status(201).json({
-        status: 201,
-        message: 'User successfuly created',
-        data,
-      });
+      return resSuccess(res, 201, data);
     } catch (error) {
-      return res.status(500).json({ error: error.message });
+      return resError(res, 500, error.message);
     }
   }
 
@@ -49,9 +48,9 @@ export default class UserController {
     try {
       const auth = Utils.createConnection();
       const url = Utils.getConnectionUrl(auth);
-      return res.status(200).json({ status: 200, url });
+      return resSuccess(res, 200, url);
     } catch (error) {
-      return res.status(500).json({ status: 500, error: error.message });
+      return resError(res, 500, error.message);
     }
   }
 
@@ -71,13 +70,13 @@ export default class UserController {
       const plus = Utils.getGooglePlusApi(auth);
       const me = await plus.people.get({ userId: 'me' });
       const email = me.data.emails && me.data.emails.length && me.data.emails[0].value;
-      const user = await UserServices.getUserByGmail(email);
+      const user = await UserServices.getUserByEmail(email);
       if (!user) {
-        return res.status(404).json({ status: 404, message: 'User not found' });
+        return resError(res, 404, 'User not found');
       }
-      return res.status(200).json({ status: 200, user });
+      return resSuccess(res, 200, user);
     } catch (error) {
-      return res.status(500).json({ status: 500, error: error.message });
+      return resError(res, 500, error.message);
     }
   }
 
@@ -91,7 +90,7 @@ export default class UserController {
   static async getLinkedinUrl(req, res) {
     const authurl = Linkedin.auth.authorize(scope);
     const url = authurl;
-    return res.status(200).json({ status: 200, url });
+    return resSuccess(res, 200, url);
   }
 
   /**
@@ -102,45 +101,37 @@ export default class UserController {
    * @memberof User
    */
   static async getLinkedinAccountFromCode(req, res) {
-    Linkedin.auth.getAccessToken(
-      res,
-      req.query.code,
-      req.query.state,
-      async (err, results) => {
-        if (err) return err;
-        const accessToken = results.access_token;
+    Linkedin.auth.getAccessToken(res, req.query.code, req.query.state, async (err, results) => {
+      if (err) return err;
+      const accessToken = results.access_token;
 
-        const options = {
-          host: 'api.linkedin.com',
-          path: '/v2/emailAddress?q=members&projection=(elements*(handle~))',
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'cache-control': 'no-cache',
-            'X-Restli-Protocol-Version': '2.0.0'
-          }
-        };
+      const options = {
+        host: 'api.linkedin.com',
+        path: '/v2/emailAddress?q=members&projection=(elements*(handle~))',
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'cache-control': 'no-cache',
+          'X-Restli-Protocol-Version': '2.0.0'
+        }
+      };
 
-        const profileRequest = https.request(options, (result) => {
-          let data = '';
-          result.on('data', (chunk) => {
-            data += chunk;
-          });
-          result.on('end', async () => {
-            const profileData = JSON.parse(data);
-            const email = Object.values(profileData.elements[0])[0]
-              .emailAddress;
-            const user = await UserServices.getUserByLinkedin(email);
-            if (!user) {
-              return res
-                .status(404)
-                .json({ status: 404, message: 'User not found' });
-            }
-            return res.status(200).json({ status: 200, user });
-          });
+      const profileRequest = https.request(options, (result) => {
+        let data = '';
+        result.on('data', (chunk) => {
+          data += chunk;
         });
-        profileRequest.end();
-      }
-    );
+        result.on('end', async () => {
+          const profileData = JSON.parse(data);
+          const email = Object.values(profileData.elements[0])[0].emailAddress;
+          const user = await UserServices.getUserByEmail(email);
+          if (!user) {
+            return resError(res, 404, 'User not found');
+          }
+          return resSuccess(res, 200, user);
+        });
+      });
+      profileRequest.end();
+    });
   }
 }

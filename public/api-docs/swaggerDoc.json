@@ -122,7 +122,7 @@
                 }
             }
         },
-        "/api/v1/auth/user": {
+        "/api/v1/auth/signup": {
             "post": {
                 "tags": [
                     "User"
@@ -177,6 +177,129 @@
                     },
                     "409": {
                         "description": "User already exists"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/user/google/signin": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Logs user into the system via google",
+                "description": "",
+                "operationId": "loginUser",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "url":{
+                                "type": "string",
+                                "example": "https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consen"
+                                }
+                                
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "error message"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/user/linkendin/signin": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Logs user into the system via Linkedin",
+                "description": "",
+                "operationId": "loginUser",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "url":{
+                                "type": "string",
+                                "example": "https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=86h0yv5ea8q7ti"
+                                }
+                           }
+                        }
+                    },
+                    "500": {
+                        "description": "error message"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/google/callback": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "redirect route for Google to Log user into the system",
+                "description": "",
+                "operationId": "loginUser",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "signin",
+                        "schema": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/linkedin/callback": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Linkedin redirect route to Log user into the system",
+                "description": "",
+                "operationId": "loginUser",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "signin",
+                        "schema": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
                     }
                 }
             }

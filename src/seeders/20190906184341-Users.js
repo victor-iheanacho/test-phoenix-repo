@@ -1,3 +1,7 @@
+import { config } from 'dotenv';
+
+config();
+
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert(
@@ -7,9 +11,8 @@ module.exports = {
           firstName: 'Wetravel',
           lastName: 'user1',
           email: 'wetravel.user1@gmail.com',
-          password: 'password',
+          password: process.env.SECRET,
           phoneNumber: 12345678,
-          id: 23,
           createdAt: new Date(),
           updatedAt: new Date()
         },
@@ -17,9 +20,8 @@ module.exports = {
           firstName: 'chidi',
           lastName: 'nma',
           email: 'chidimma@gmail.com',
-          password: 'password65',
+          password: process.env.SECRET,
           phoneNumber: 12345678,
-          id: 234,
           createdAt: new Date(),
           updatedAt: new Date()
         }

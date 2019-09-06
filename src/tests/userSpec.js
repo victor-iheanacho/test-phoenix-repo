@@ -4,7 +4,6 @@ import app from '..';
 
 chai.use(chaiHttp);
 const { expect } = chai;
-
 const endPoint = '/api/v1';
 
 describe('POST /api/v1/auth/signup', () => {
@@ -24,7 +23,7 @@ describe('POST /api/v1/auth/signup', () => {
       .send(user)
       .end((_err, res) => {
         expect(res).to.have.status(201);
-        expect(res.body.status).to.be.equal(201);
+        expect(res.body.status).to.be.equal('success');
         expect(res.body).to.have.property('data');
         expect(res.body.data).to.be.a('object');
         expect(res.body.data).to.have.property('id');
@@ -55,10 +54,30 @@ describe('POST /api/v1/auth/signup', () => {
       .send(user)
       .end((_err, res) => {
         expect(res).to.have.status(409);
-        expect(res.body.status).to.be.equal(409);
+        expect(res.body.status).to.be.equal('error');
         expect(res.body).to.have.property('error');
         expect(res.body.error).to.be.a('string');
         expect(res.body.error).to.include('already exists');
+        done();
+      });
+  });
+  it('invalid input', (done) => {
+    const user = {
+      email: 'victor@gmail.com',
+      firstName: 'moke',
+      lastName: 'ilo',
+      userName: 'huo hshsh',
+      password: '1234hdgdpds',
+      phoneNumber: '098333333',
+    };
+    chai.request(app)
+      .post('/api/v1/auth/signup')
+      .send(user)
+      .end((err, res) => {
+        expect(res).to.have.status(422);
+        expect(res.body).be.an('object');
+        expect(res.body.status).be.a('string');
+        expect(res.body.status).to.be.equal('error');
         done();
       });
   });
@@ -70,8 +89,8 @@ describe('GET /api/v1/user/google/signin', () => {
       .get(`${endPoint}/auth/user/google/signin`)
       .end((_err, res) => {
         expect(res).to.have.status(200);
-        expect(res.body.status).to.be.equal(200);
-        expect(res.body).to.have.property('url');
+        expect(res.body.status).to.be.equal('success');
+        expect(res.body).to.have.property('data');
         expect(res.body).to.be.a('object');
         done();
       });
@@ -83,9 +102,8 @@ describe('GET /api/v1/user/linkedin/signin', () => {
       .request(app)
       .get(`${endPoint}/auth/user/google/signin`)
       .end((_err, res) => {
-        expect(res).to.have.status(200);
-        expect(res.body.status).to.be.equal(200);
-        expect(res.body).to.have.property('url');
+        expect(res.body.status).to.be.equal('success');
+        expect(res.body).to.have.property('data');
         expect(res.body).to.be.a('object');
         done();
       });
