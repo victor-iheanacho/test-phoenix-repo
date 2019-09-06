@@ -1,4 +1,7 @@
-import userServices from '../services/userServices.js';
+import userServices from '../services/userServices';
+import ResponseMsg from '../utils/responseMessages';
+
+const { resError } = ResponseMsg;
 
 /**
  * User Middlewares Class
@@ -17,12 +20,9 @@ export default class UserMiddlewares {
       const { email } = req.body;
       const data = await userServices.getUserByEmail(email);
       if (!data) return next();
-      return res.status(409).json({
-        status: 409,
-        error: 'Unsuccesful, user already exists, kindly use a different email.',
-      });
+      return resError(res, 409, 'Unsuccesful, user already exists, kindly use a different email.');
     } catch (error) {
-      return res.status(500).json({ error: error.message });
+      return resError(res, 500, error.message);
     }
   }
 }

@@ -1,6 +1,8 @@
 import UserServices from '../services/userServices';
 import Utils from '../utils';
+import ResponseMsg from '../utils/responseMessages';
 
+const { resSuccess, resError } = ResponseMsg;
 /**
  * User controller Class
  */
@@ -20,13 +22,9 @@ export default class UserController {
       const { id, isAdmin } = data;
       const token = Utils.generateToken({ id, isAdmin });
       res.set('Authorization', `Bearer ${token}`);
-      return res.status(201).json({
-        status: 201,
-        message: 'User successfuly created',
-        data,
-      });
+      return resSuccess(res, 201, data);
     } catch (error) {
-      return res.status(500).json({ error: error.message });
+      return resError(res, 500, error.message);
     }
   }
 }
