@@ -26,6 +26,8 @@ lib-cov
 # Coverage directory used by tools like istanbul
 coverage
 *.lcov
+lcov.info
+.coveralls.yml
 
 # nyc test coverage
 .nyc_output
@@ -92,4 +94,10 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
+dist
+
+
 # End of https://www.gitignore.io/api/node
+
+.vscode
+dist
