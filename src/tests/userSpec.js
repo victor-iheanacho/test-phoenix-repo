@@ -17,7 +17,8 @@ describe('POST /api/v1/auth/signup', () => {
       phoneNumber: '09034343434',
       isAdmin: false,
     };
-    chai.request(app)
+    chai
+      .request(app)
       .post(`${endPoint}/auth/signup`)
       .send(user)
       .end((_err, res) => {
@@ -47,7 +48,8 @@ describe('POST /api/v1/auth/signup', () => {
       phoneNumber: '09034343434',
       isAdmin: false,
     };
-    chai.request(app)
+    chai
+      .request(app)
       .post(`${endPoint}/auth/signup`)
       .send(user)
       .end((_err, res) => {
@@ -76,6 +78,33 @@ describe('POST /api/v1/auth/signup', () => {
         expect(res.body).be.an('object');
         expect(res.body.status).be.a('string');
         expect(res.body.status).to.be.equal('error');
+        done();
+      });
+  });
+});
+describe('GET /api/v1/user/google/signin', () => {
+  it('should create an authentication url and return 200', (done) => {
+    chai
+      .request(app)
+      .get(`${endPoint}/auth/user/google/signin`)
+      .end((_err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.status).to.be.equal('success');
+        expect(res.body).to.have.property('data');
+        expect(res.body).to.be.a('object');
+        done();
+      });
+  });
+});
+describe('GET /api/v1/user/linkedin/signin', () => {
+  it('should create an authentication url and return 200', (done) => {
+    chai
+      .request(app)
+      .get(`${endPoint}/auth/user/google/signin`)
+      .end((_err, res) => {
+        expect(res.body.status).to.be.equal('success');
+        expect(res.body).to.have.property('data');
+        expect(res.body).to.be.a('object');
         done();
       });
   });
